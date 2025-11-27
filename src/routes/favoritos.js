@@ -3,6 +3,27 @@ const router = express.Router(); //manejador de rutas de express
 const favoritoSchema = require("../models/favorito");
 const verifyToken = require("./validate_token");
 
+
+router.post("/favoritos", verifyToken, async (req, res) => {
+  try {
+    // Verificamos si ya existe para no duplicar
+    const existe = await favoritoSchema.findOne({ 
+      usuario: req.body.usuario, 
+      receta: req.body.receta 
+    });
+
+    if (existe) {
+      return res.json({ message: "Ya está en favoritos" });
+    }
+
+    const nuevoFavorito = favoritoSchema(req.body);
+    await nuevoFavorito.save();
+    res.json(nuevoFavorito);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+});
+
 //Consultar todos los favoritos
 router.get("/favoritos", verifyToken, (req, res) => {
  favoritoSchema.find()

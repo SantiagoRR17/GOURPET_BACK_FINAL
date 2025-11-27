@@ -5,6 +5,7 @@ const calificacionRoutes = require("./routes/calificaciones");
 const favoritoRoutes = require("./routes/favoritos");
 const recetaRoutes = require("./routes/recetas");
 const authRoutes = require("./routes/authentication");
+const userRoutes = require("./routes/usuarios");
 const mongoose = require("mongoose");
 require("dotenv").config();
 app.use(express.urlencoded({ extended: false })); //permite leer los datos que vienen en la petición
@@ -13,6 +14,7 @@ app.use("/api", authRoutes);
 app.use("/api", calificacionRoutes);
 app.use("/api", favoritoRoutes);
 app.use("/api", recetaRoutes);
+app.use("/api", userRoutes);
 app.use(express.json()); //Conexión a la base de datos
 mongoose
   .connect(process.env.MONGODB_URI)
